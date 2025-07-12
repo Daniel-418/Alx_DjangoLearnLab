@@ -1,4 +1,4 @@
->>> book = Books.objects.get(pk=1)
+>>> book = Book.objects.get(pk=1)
 >>> book.title
 '1984'
 >>> book.author
