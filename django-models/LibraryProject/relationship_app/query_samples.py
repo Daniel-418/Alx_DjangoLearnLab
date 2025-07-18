@@ -10,4 +10,4 @@ lib = Library.objects.get(name=library_name)
 books = lib.books.all()
 
 lib = Library.objects.get(name=library_name)
-librarian = lib.librarian
+Librarian.objects.get(library=lib)
