@@ -4,7 +4,7 @@ from .models import Book
 
 
 # Create your views here.
-def booklist(request):
+def list_books(request):
     books = {"books" : Book.objects.all()}
 
     return render(request, "list_books.html", books)
