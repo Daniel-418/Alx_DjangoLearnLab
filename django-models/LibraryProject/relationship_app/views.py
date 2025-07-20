@@ -1,6 +1,7 @@
 from django.http import HttpRequest
 from django.shortcuts import render
-from .models import Book, Library
+from .models import Book
+from .models import Library
 from django.views import generic
 
 
@@ -10,6 +11,6 @@ def list_books(request):
 
     return render(request, "relationship_app/list_books.html", books)
 
-class LibraryDetailView(generic.DetailView):
+class LibraryDetailView():
     model = Library
-    template_name = "library_detail.html"
+    template_name = "relationship_app/library_detail.html"
