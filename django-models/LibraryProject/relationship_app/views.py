@@ -10,6 +10,7 @@ from django.views.generic import CreateView
 # Create your views here.
 def list_books(request):
     books = {"books" : Book.objects.all()}
+    x = "UserCreationForm()"
 
     return render(request, "relationship_app/list_books.html", books)
 
