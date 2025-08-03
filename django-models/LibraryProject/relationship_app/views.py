@@ -35,7 +35,7 @@ def delete_book(request: HttpRequest):
         title = request.POST.get("title")
         author = request.POST.get("author")
         if title and author:
-            book = Book.objects.filter(title=title, author=author)
+            book = Book.objects.filter(title=title, author=author).first()
             if book:
                 book.delete()
                 return redirect("book_list")
@@ -44,7 +44,27 @@ def delete_book(request: HttpRequest):
         else:
             return HttpResponse("invalid input", status=200)
     return render(request, "delete_book.html")
-        
+
+#Edits a book
+@permission_required("relationship_app.can_change_book")
+def change_book(request: HttpRequest):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        author = request.POST.get("author")
+        new_title = request.POST.get("new_title")
+        new_author = request.POST.get("new_author")
+        if title and author:
+            book = Book.objects.filter(title=title, author=author).first()
+            if book:
+                book.title = new_title
+                book.author = new_author
+                book.save()
+                return redirect("book_list")
+            else:
+                return HttpResponse("Book not found", status=400)
+        else:
+            return HttpResponse("invalid input", status=200)
+    return render(request, "edit_book.html")
             
 class LibraryDetailView(DetailView):
     model = Library
