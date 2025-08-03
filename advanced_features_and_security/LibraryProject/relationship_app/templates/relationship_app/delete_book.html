@@ -1,0 +1,21 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Delete Book</h1>
+    <form method="post">
+        {% csrf_token %}
+	<label for="title">Title</label><br>
+	<input type="text" name="title" id="title"><br><br>
+
+	<label for="author">Author</label><br>
+	<input type="text" name="author" id="author"><br><br>
+
+        <button type="submit">Delete Book</button>
+    </form>
+</body>
+</html>
