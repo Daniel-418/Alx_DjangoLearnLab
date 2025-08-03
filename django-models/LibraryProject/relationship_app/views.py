@@ -1,4 +1,5 @@
 from django.contrib.auth import login
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -23,3 +24,9 @@ class SignUpView(CreateView):
     success_url = reverse_lazy('login')
     template_name = 'relationship_app/register.html'
 
+def is_admin(user):
+    return user.userprofile.role == "Admin"
+
+@user_passes_test(is_admin)
+def random_view(request):
+    return render(request, template_name="relationship_app/admin_view.html")
