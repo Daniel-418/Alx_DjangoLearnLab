@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import choices
+
 # Create your models here.
 class Author(models.Model):
     name = models.CharField(max_length = 200)
@@ -8,6 +10,13 @@ class Author(models.Model):
         return self.name
 
 class Book(models.Model):
+    class Meta:
+        permissions = [
+            ("can_add_book", "Can add a new book"),
+            ("can_change_book", "Can change a book entry"),
+            ("can_delete_book", "Can delete a book in the database")
+        ]
+
     title = models.CharField(max_length=200)
     author = models.ForeignKey(Author, on_delete=(models.CASCADE))
 

@@ -1,20 +1,51 @@
-from django.contrib.auth import login
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import permission_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render
+from django.http import Http404, HttpRequest, HttpResponse
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from .models import Book
 from .models import Library
 from django.views.generic.detail import DetailView
 from django.views.generic import CreateView
+from .forms import BookForm
 
 # Create your views here.
 def list_books(request):
     books = {"books" : Book.objects.all()}
-    x = "UserCreationForm()"
 
     return render(request, "relationship_app/list_books.html", books)
 
+# Creates a book
+@permission_required("relationship_app.can_add_books")
+def create_book(request):
+    form = BookForm()
+    if request.method == "POST":
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("book_list")
+        else:
+            form = BookForm()
+    return render(request, "relationship_app.add_book.html", {"form": form})
+
+# Deletes a book
+@permission_required("relationship_app.can_delete_books")
+def delete_book(request: HttpRequest):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        author = request.POST.get("author")
+        if title and author:
+            book = Book.objects.filter(title=title, author=author)
+            if book:
+                book.delete()
+                return redirect("book_list")
+            else:
+                return HttpResponse("Book not found", status=400)
+        else:
+            return HttpResponse("invalid input", status=200)
+    return render(request, "delete_book.html")
+        
+            
 class LibraryDetailView(DetailView):
     model = Library
     template_name = "relationship_app/library_detail.html"
