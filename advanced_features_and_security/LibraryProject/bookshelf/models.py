@@ -8,7 +8,7 @@ class Book(models.Model):
 
 
 #Custom User
-class MyUser(AbstractUser):
+class CustomUser(AbstractUser):
     date_of_birth = models.DateField()
     profile_photo = models.ImageField()
 
