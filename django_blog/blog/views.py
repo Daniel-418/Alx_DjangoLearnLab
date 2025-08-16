@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 # Create your views here.
 class UserCreationView(CreateView):
     form_class = CustomUserCreationForm
-    template_name = "blog/registration.html"
+    template_name = "blog/register.html"
     success_url = reverse_lazy("profile")
 
     def form_valid(self, form):
