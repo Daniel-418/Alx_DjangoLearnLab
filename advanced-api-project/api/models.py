@@ -6,5 +6,5 @@ class Author(models.Model):
 
 class Book(models.Model):
     title = models.CharField(max_length=100)
-    author = models.ForeignKey(Author, on_delete=models.PROTECT)
+    author = models.ForeignKey(Author, on_delete=models.PROTECT, related_name="books")
     publication_year = models.IntegerField()
