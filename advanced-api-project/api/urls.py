@@ -7,7 +7,7 @@ from .views import (ListView, UpdateView,
 urlpatterns = [
     path("books/", ListView.as_view(), name="list"),
     path("books/<int:pk>/", DetailView.as_view(), name="detail"),
-    path("books/<int:pk>/update/", UpdateView.as_view(), name="update"),
+    path("books/update/<int:pk>", UpdateView.as_view(), name="update"),
     path("books/create/", CreateView.as_view(), name="create",),
-    path("books/<int:pk>/delete/", DeleteView.as_view(), name="delete")
+    path("books/delete/<int:pk>", DeleteView.as_view(), name="delete")
 ]
