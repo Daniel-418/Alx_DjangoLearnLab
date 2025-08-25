@@ -1,4 +1,5 @@
-from django.contrib.auth import login, mixins
+from django.contrib.auth import login
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
 from django.shortcuts import redirect, render
@@ -32,19 +33,30 @@ def UserUpdateView(request:HttpRequest):
     return render(request, "blog/profile.html", {"form": form})
 
 #Shows all the lists of posts
-class PostListView(mixins.LoginRequiredMixin, ListView):
+class PostListView(LoginRequiredMixin, UserPassesTestMixin,
+                   ListView):
     login_url = reverse_lazy("login")
     template_name = "blog/post_list.html"
     model = Post
 
+    def test_func(self):
+        post = self.get_object() # pyright: ignore
+        return post.author == self.request.user
+
 #Shows a specific Post
-class PostDetailView(mixins.LoginRequiredMixin, DetailView):
+class PostDetailView(LoginRequiredMixin, UserPassesTestMixin,
+                     DetailView):
     template_name = "blog/post.html"
     login_url = reverse_lazy("login")
     model = Post
 
+    def test_func(self):
+        post = self.get_object() # pyright: ignore
+        return post.author == self.request.user
+
 #Creates a Post
-class PostCreateView(mixins.LoginRequiredMixin, CreateView):
+class PostCreateView(LoginRequiredMixin, UserPassesTestMixin,
+                     CreateView):
     login_url = reverse_lazy("login")
     form_class = PostCreateForm
     template_name = "blog/new_post.html"
@@ -56,8 +68,13 @@ class PostCreateView(mixins.LoginRequiredMixin, CreateView):
         obj.save()
         return super().form_valid(form)
 
+    def test_func(self):
+        post = self.get_object() # pyright: ignore
+        return post.author == self.request.user
+
 #Updates a specific post
-class PostUpdateView(mixins.LoginRequiredMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin,
+                     UpdateView):
     template_name = "blog/post_update.html"
     login_url = reverse_lazy("login")
     model = Post
@@ -67,8 +84,13 @@ class PostUpdateView(mixins.LoginRequiredMixin, UpdateView):
         return reverse("post_detail", kwargs={"pk": self.object.pk })
 
 #Deletes a post
-class PostDeleteView(mixins.LoginRequiredMixin, DeleteView):
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin,
+                     DeleteView):
     login_url = reverse_lazy("login")
     success_url = reverse_lazy("post_list")
     template_name = "blog/post_delete.html"
     model = Post
+
+    def test_func(self):
+        post = self.get_object() # pyright: ignore
+        return post.author == self.request.user
