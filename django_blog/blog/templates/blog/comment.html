@@ -1,0 +1,13 @@
+{% extends  "blog/base.html" %}
+<h1>{{ comment.post.title }}</h1>
+<p>{{ comment.post.content }}</p>
+{% block title %}Comment{% endblock %}
+{% block content %}
+<h1>{{ comment.author }}</h1>
+<p>{{ comment.content }}</p>
+<a href="{% url 'update_comment' pk=comment.post.id comment_pk=comment.id%}">Update</a>
+<a href="{% url 'delete_comment' pk=comment.post.id comment_pk=comment.id%}">Delete</a>
+<br></br>
+<i>{{ comment.created_at }}</i>
+</form>
+{% endblock %}

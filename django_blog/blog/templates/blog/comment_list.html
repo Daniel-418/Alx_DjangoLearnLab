@@ -1,0 +1,16 @@
+{% extends  "blog/base.html" %}
+{% block title %}Comments{% endblock %}
+{% block content %}
+<h1>{{ post.title }}</h1>
+<p>{{ post.content }}</p>
+<ul><br/>
+{% for comment in comment_list %}
+	<li>
+		<a href="{% url 'comment_detail' pk=comment.post.id comment_pk=comment.id %}">
+			{{comment.content|truncatechars:20}}
+		</a><br>
+		<i>Created: {{comment.created_at}}</i>
+	</li>
+{% endfor %}
+</ul>
+{% endblock %}
