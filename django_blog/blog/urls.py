@@ -24,4 +24,3 @@ urlpatterns = [
     path("post/<int:pk>/comments/new", CommentCreateView.as_view(), name="new_comment"),
 ]
 
-#["comment/<int:pk>/update/", "post/<int:pk>/comments/new/", "comment/<int:pk>/delete/"]
