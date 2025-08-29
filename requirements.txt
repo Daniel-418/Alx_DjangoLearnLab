@@ -2,6 +2,7 @@ asgiref==3.9.1
 black==25.1.0
 click==8.2.1
 Django==5.2.4
+django-filter==25.1
 django-stubs==5.2.2
 django-stubs-ext==5.2.2
 djangorestframework==3.16.0
